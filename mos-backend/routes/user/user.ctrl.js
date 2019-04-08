@@ -3,13 +3,13 @@ const User = require('../../model/user');
 
 const getJWT = id => jwt.sign({ id }, process.env.JWT_KEY , { expiresIn : '7d' })
 
-const signup = async function signup(req,res) {
+const signup = async function signUp(req,res) {
    try{
     var user = new User({
         id : req.body.id,
         password : req.body.password,
-        name : req.body.username,
-        imageUrl : req.body.imageurl,
+        name : req.body.name,
+        imageurl : req.body.imageurl,
         posts : [],
         qna : []
     })
@@ -20,7 +20,7 @@ const signup = async function signup(req,res) {
    }
 }
 
-const login = async function login(req,res){
+const login = async function signIn(req,res){
     try{
         const user = await User.findOne( {id : req.body.id } );
         if(!user) res.status(403).json({ token : null, msg : 'user not found'});
@@ -31,5 +31,42 @@ const login = async function login(req,res){
     }
 }
 
+const getProfile = async function getUserInfo(req,res){
+    try{
+        const payload = jwt.verify(req.query.token, process.env.JWT_KEY );
+        const user = await User.findById(payload.id);
+        if(!user) res.status(404).json({msg : 'failure'});
+        else{
+            res.status(200).json({
+                msg : 'success',
+                name : user.name,
+                imageurl : user.imageurl
+            });
+        }
+    } catch(e) {
+        console.log(e);
+        res.status(404).json({ msg : 'failure' });
+    }
+}
+
+const getPosts = async function getMyPosts(req,res){
+    try{
+        const payload = jwt.verify(req.query.token, process.env.JWT_KEY);
+        const user = await User.findById(payload.id);
+        if(!user) res.status(404).json({msg : 'failure'});
+        else{
+            res.status(200).json({
+                msg : 'success',
+                posts : user.posts
+            });
+        }
+    } catch(e){
+        console.log(e);
+        res.status(404).json({ msg : 'failure' });
+    }
+}
+
 exports.signup = signup;
 exports.login = login;
+exports.getProfile = getProfile;
+exports.getPosts = getPosts;
