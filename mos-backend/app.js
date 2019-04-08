@@ -13,7 +13,7 @@ mongoose.connect('mongodb://localhost/MOS', { useNewUrlParser: true })
 app.set('PORT',process.env.PORT || 8080)
 .use(bodyParser.json())
 .use(bodyParser.urlencoded({ extended : true }))
-//.use('/api', require('./routes/index'))
+.use('/api', require('./routes/index'))
 .get('/',(req,res) => res.json({ result : 'success' }));
 
 module.exports = app
