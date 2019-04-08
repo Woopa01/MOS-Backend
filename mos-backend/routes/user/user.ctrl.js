@@ -10,6 +10,7 @@ const signup = async function signUp(req,res) {
         password : req.body.password,
         name : req.body.name,
         imageurl : req.body.imageurl,
+        category : req.body.category,
         posts : [],
         qna : []
     })
@@ -33,14 +34,15 @@ const login = async function signIn(req,res){
 
 const getProfile = async function getUserInfo(req,res){
     try{
-        const payload = jwt.verify(req.query.token, process.env.JWT_KEY );
+        const payload = jwt.verify(req.get('token'), process.env.JWT_KEY );
         const user = await User.findById(payload.id);
         if(!user) res.status(404).json({msg : 'failure'});
         else{
             res.status(200).json({
                 msg : 'success',
                 name : user.name,
-                imageurl : user.imageurl
+                imageurl : user.imageurl,
+                category : user.category
             });
         }
     } catch(e) {
@@ -51,7 +53,7 @@ const getProfile = async function getUserInfo(req,res){
 
 const getPosts = async function getMyPosts(req,res){
     try{
-        const payload = jwt.verify(req.query.token, process.env.JWT_KEY);
+        const payload = jwt.verify(req.get('token'), process.env.JWT_KEY);
         const user = await User.findById(payload.id);
         if(!user) res.status(404).json({msg : 'failure'});
         else{

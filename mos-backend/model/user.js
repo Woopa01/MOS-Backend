@@ -5,6 +5,7 @@ const User = new mongoose.Schema({
     password : String,
     name : String,
     imageurl : String,
+    category : [String],
     posts : [{type : mongoose.Schema.Types.ObjectId , ref : 'posts'}],
     qna : [{type : mongoose.Schema.Types.ObjectId , ref : 'qna'}],
 })
