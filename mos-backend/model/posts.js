@@ -2,17 +2,18 @@ const mongoose = require('mongoose');
 
 const Posts = new mongoose.Schema({
     title : String,
-    author : {type : mongoose.Schema.Types.ObjectId, ref : 'user'},
+    author : {type : String, ref : 'user'},
     imageUrl : [String],
     content : String,
+    category : String,
     date : {type : Date, default : Date.now()},
     comment : [{
-        author : {type : mongoose.Schema.Types.ObjectId, ref : 'user'},
+        author : {type : String, ref : 'user'},
         content : String,
         date : {type : Date, default : Date.now()},    
     }],
     commentCount : {type : Number, default : 0},
-    isVoted : Boolean,
+    isVoted : {type : Boolean, default : false},
     voteCount : {type : Number, default : 0}
 })
 
