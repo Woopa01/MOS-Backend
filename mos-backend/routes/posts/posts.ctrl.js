@@ -78,19 +78,21 @@ const getPostDetail = async function getPostDetailWithID(req,res){
         });
     } catch(e) {
         console.log(e);
-        res.status
+        res.status(500).json({msg : failure})
     }
 }
 
 const postVote = async function postVoteWithToken(req,res){
     try {
         const payload = jwt.verify(req.get('token'),process.env.JWT_KEY);
-        const post = Posts.findById(req.params.id);
-        const user = User.findById(payload.id);
-        
-        
+        const post = await Posts.findById(req.body.id);
+        const user = await User.findByIdAndUpdate(payload.id,{
+            $addToSet : { votePosts : post.id }
+        });
+        res.status(200).json({ msg : "success" });
     } catch(e) {
         console.log(e);
+        res.status(500).json({msg : "success"});
     }
 } 
 
@@ -98,3 +100,4 @@ exports.newPosts = newPosts;
 exports.getPostsList = getPostsList;
 exports.newComment = newComment;
 exports.getPostDetail = getPostDetail;
+exports.postVote = postVote;

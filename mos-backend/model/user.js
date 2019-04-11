@@ -6,6 +6,7 @@ const User = new mongoose.Schema({
     name : String,
     imageurl : String,
     category : [String],
+    votesPosts : [{type : mongoose.Schema.Types.ObjectId, ref : 'posts'}],
     posts : [{type : mongoose.Schema.Types.ObjectId , ref : 'posts'}],
     qna : [{type : mongoose.Schema.Types.ObjectId , ref : 'qna'}],
 })

@@ -11,6 +11,7 @@ const signup = async function signUp(req,res) {
         name : req.body.name,
         imageurl : req.body.imageurl,
         category : req.body.category,
+        votePosts : [],
         posts : [],
         qna : []
     })
